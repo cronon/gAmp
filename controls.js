@@ -9,7 +9,6 @@ var controls = (function (){
   self.setAudio = function(audio){
     self.audio = audio;
     self.audio.addEventListener('ended',function(){controls.next()}, false);
-    //self.audio.addEventListener('error',function(){controls.next()}, false);
   }
 
   self.setPlaylist = function(pl){
@@ -75,6 +74,31 @@ var controls = (function (){
       toArray().
       map(function(div){
       return $(div).index() }));
+  }
+
+  /**
+   * Run when document loaded.
+   *
+   * @param {object} audio HTML5 <audio> element.
+   */
+  self.setup = function(audio){
+    self.audio = audio;
+
+    $(document).keypress(function(e){
+      if(e.charCode==32){
+        if(self.audio.paused){
+          self.play();
+        } else {
+          self.pause();
+        }
+      }
+    });
+
+    $(self.audio).bind('mousewheel',function(e){
+      var deltaY = e.originalEvent.deltaY;
+      if(deltaY<0){audio.volume+=0.05;}
+      if(deltaY>0){audio.volume-=0.05;}
+    })
   }
   return self;
 }());

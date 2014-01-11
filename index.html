@@ -1,20 +1,22 @@
 <html>
   <head>
     <script src="jquery-2.0.3.min.js" type="text/javascript"></script>
+
     <!-- Original jquery ui selectable dont respect clicks
          http://forum.jquery.com/topic/solution-for-selectable-vs-dblclick --> 
     <script src="jquery-ui.js" type="text/javascript"></script>
     <link type="text/css" href="http://code.jquery.com/ui/jquery-ui-git.css" rel="stylesheet" />
 
+    <!-- https://npmjs.org/package/id3js -->
     <script src="id3.min.js" type="text/javascript"></script>
     <script src="controls.js" type="text/javascript" ></script>
     <script src="playlist.js" type="text/javascript" ></script>
-    <script src="interface.js" type="text/javascript" ></script>
+    <script src="attachPlaylist.js" type="text/javascript" ></script>
     <script>
       $(document).ready(function() {
-        setup_interface(playlist);
+        attachPlaylist(playlist);
+        controls.setup($('#audio')[0]);
         var files = [{'src':'1.mp3'},{'src':'2.mp3'}];
-        controls.setAudio($('#audio')[0]);
         controls.setPlaylist(playlist);
         playlist.addFiles(files);
         controls.audio.src = playlist.getCurrentFile().src;
@@ -67,7 +69,7 @@
   <body>
     <div style="position:fixed; background-color:#ffffff; width:600px;">
       <div id="current_song">Welcome to gAmp</div>
-      <audio id="audio" src="" style="width:100%" controls>fghhgf</audio>
+      <audio id="audio" src="" style="width:100%" controls>Your browser does not support the audio tag.</audio>
       <div class="controls">
         <img src="images/play.png" onclick="controls.play()" class="controls_img" />
         <img src="images/pause.png" onclick="controls.pause()" class="controls_img" />
