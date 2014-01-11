@@ -44,7 +44,7 @@ var setup_interface = function(playlist) {
     });
   }
 
-  var scrollFollowSong = function(id){
+  var scrollToSong = function(id){
     var position = $('li:eq('+id+')')[0].getBoundingClientRect()
     var visible = document.elementFromPoint(position.left,position.top);
     if(!visible || visible.nodeName.toLowerCase() != 'li'){
@@ -64,7 +64,9 @@ var setup_interface = function(playlist) {
     $('li:eq('+prev+')').addClass('not-highlited').removeClass('highlited');
     $('li:eq('+next+')').addClass('highlited').removeClass('not-highlited').
         contents().first()[0].textContent=s;
-    scrollFollowSong(next);   
+    document.title = s;
+    $('#current_song').text(s);
+    scrollToSong(next);
   }
 
   playlist.onFilesRemoved = function(ids){

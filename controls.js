@@ -67,6 +67,7 @@ var controls = (function (){
         }).                
         map(file_to_hash)
     );
+    el.value = '';
   }
 
   self.removeFiles = function(){

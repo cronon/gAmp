@@ -22,16 +22,29 @@
       });
     </script>
     <style type="text/css">
+      #current_song{
+        text-align: center;
+        font-weight: bold;
+        font-size:22;
+      }
       .controls_img{
         width:100px;
       }
       
-      body{
-        counter-reset: item;      /* Create a chapter counter scope */
+      #playlist_wrapper{
+        position:fixed; 
+        overflow-y:auto; 
+        margin-top:200px; 
+        height:55vh; 
+        width:80%;
+      }
+
+      #playlist{
+        counter-reset: song;
       }
       #playlist > li:before { 
-        content: counter(item) ". "; 
-        counter-increment: item;
+        content: counter(song) ". "; 
+        counter-increment: song;
       }
       #playlist > li{
         display:block;
@@ -43,13 +56,17 @@
       .ui-selected{
         background:#face8d;
       }
+      .ui-selecting{
+        background:#fbdf9e;
+      }
       .handle{
         float: right;
       }
     </style>
   </head>
   <body>
-    <div style="position:fixed; background-color:#ffffff">
+    <div style="position:fixed; background-color:#ffffff; width:600px;">
+      <div id="current_song">Welcome to gAmp</div>
       <audio id="audio" src="" style="width:100%" controls>fghhgf</audio>
       <div class="controls">
         <img src="images/play.png" onclick="controls.play()" class="controls_img" />
@@ -76,7 +93,7 @@
         <button onclick="controls.removeFiles()"><label>Remove selected</label></button>
       </div>
     </div>
-    <div id="playlist_wrapper" style="position:fixed; overflow-y:auto; margin-top:200px; height:600px; width:80%">
+    <div id="playlist_wrapper">
       <ol id="playlist">
       </ol>
     </div>
