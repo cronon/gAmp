@@ -2,7 +2,23 @@
 //   var self = {};
 //   return self;
 // })();
-var setup_interface = function() {
+var setup_interface = function(playlist) {
+  var was = 0;
+
+  $('#playlist').sortable({ 
+      handle: ".handle", 
+      axis: 'y',
+      start: function(e,ui){
+          was = ui.item.index(); 
+      },
+      update: function(e,ui){
+          playlist.replaceFile(was,ui.item.index());
+      }
+    }).
+    selectable({ 
+      filter: "li", 
+      cancel: ".handle"
+    });
 
   var onSongDblClick = function(e){
     var id = $(e.target).index();
@@ -23,8 +39,8 @@ var setup_interface = function() {
       s = file.name;
       $('#playlist').append("<li>" + s + "</li>");
       $('li').last().addClass('not-highlited').
-                    dblclick(onSongDblClick);
-                    //append("<span class='handle ui-icon ui-icon-carat-2-n-s'></span>");
+                    dblclick(onSongDblClick).
+                    append("<span class='handle ui-icon ui-icon-carat-2-n-s'></span>");
     });
   }
 

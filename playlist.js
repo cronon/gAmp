@@ -82,5 +82,13 @@ var playlist = (function(){
     // })
     self.onFilesRemoved(ids);
   }
+
+  self.replaceFile = function(was,become){
+    var file = [].splice.call(self,was,1)[0];
+    [].splice.call(self,become,0,file);
+    if(current == was){
+      current = become;
+    }
+  }
   return self;
 }());
