@@ -53,6 +53,43 @@ var controls = (function (){
   }
 
   /**
+   * Split array to arrays by given property.
+   *
+   * @param {Function} cb Function returns property.
+   * @returns {Array} Array of arrays.
+   */
+  Array.prototype.splitByProperty = function(cb){
+    var hash = {};
+    var property;
+    this.forEach(function(item){
+      property = cb(item)
+      hash[property]=hash[property] || [];
+      hash[property].push(item);
+    });
+    var key;
+    var result = [];
+    for(key in hash){
+      result.push(hash[key]);
+    }
+    return result;
+  }
+
+  /**
+   * Flattens a nested array.
+   *
+   * @returns {Array} Array flattened a single level
+   */
+  Array.prototype.flatten = function (){
+    return this.reduce(function(a,b){
+      if(a.concat){
+        return a.concat(b)
+      }else{
+        return [a].concat(b)
+      }
+    });
+  }
+
+  /**
    * Add files to playlist
    *
    * @param {object} el HTML input element
@@ -61,12 +98,21 @@ var controls = (function (){
     window.URL = window.URL || window.webkitURL;
     playlist.addFiles(
         [].slice.call(el.files).
+        splitByProperty(function(file){
+          return file.webkitRelativePath.split('/').slice(0,-1).join('/'); //remove file name from the path
+        }).
+        map(function(directory){
+          return directory.sort(function(file1,file2){
+              return file1.name.localeCompare(file2.name);
+          });
+        }).
+        flatten().
         filter(function(file){
-            return file.type.split('/')[0] == 'audio';
+          return file.type.split('/')[0] == 'audio';
         }).                
         map(file_to_hash)
     );
-    el.value = '';
+   // el.value = '';
   }
 
   self.removeFiles = function(){
@@ -83,6 +129,7 @@ var controls = (function (){
    */
   self.setup = function(audio){
     self.audio = audio;
+    self.audio.addEventListener('ended',function(){controls.next()}, false);
 
     $(document).keypress(function(e){
       if(e.charCode==32){
