@@ -104,7 +104,8 @@ var controls = (function (){
    */
   var sortInDirectories = function(files){
     return splitByProperty(files,function(file){
-          return file.webkitRelativePath.split('/').slice(0,-1).join('/'); //remove file name from the path
+          return (file.webkitRelativePath||file.mozFullPath).
+                  split('/').slice(0,-1).join('/'); //remove file name from the path
         }).
         map(function(directory){
           return directory.sort(function(file1,file2){
@@ -120,6 +121,8 @@ var controls = (function (){
    * @param {object} el HTML input element
    */
   self.addFiles = function(el){
+    el.click();
+    el.onchange = function(){
     window.URL = window.URL || window.webkitURL;
     playlist.addSongs(
         sortInDirectories(
@@ -130,7 +133,7 @@ var controls = (function (){
         }).                
         map(function(f){return new Song(f)})
     );
-    el.value = '';
+    el.value = '';}
   }
 
   self.removeSongs = function(){
@@ -150,13 +153,17 @@ var controls = (function (){
     self.audio = audio;
     self.audio.addEventListener('ended',function(){controls.next()}, false);
 
-    $(document).keypress(function(e){
-      if(e.charCode==32){
+    $(document).keyup(function(e){
+      console.log(e.keyCode)
+      if(e.keyCode==32||e.keyCode==19){
         if(self.audio.paused){
           self.play();
         } else {
           self.pause();
         }
+      }
+      if(e.keyCode==8||e.keyCode==46){
+        self.removeSongs();
       }
     });
 
