@@ -75,13 +75,9 @@ var playlist = (function(){
    */
   self.removeFiles = function(ids){
     ids.sort(spaceship).reverse().forEach(function(id){
-      console.log(id);
-      console.log([].splice.call(self,id,1)[0].name);
-      console.log(self);
+      (window.URL || window.webkitURL).revokeObjectURL(self[id].src);
+      [].splice.call(self,id,1);
     });
-    // [].forEach.call(self, function(file,index){
-    //   file.id = index;
-    // })
     self.onFilesRemoved(ids);
   }
 

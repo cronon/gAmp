@@ -20,16 +20,24 @@ var controls = (function (){
       self.audio.currentTime = 0;
     }
     self.audio.play();
+    $('#favicon')[0].href = 'images/play.png';
   }
 
   self.pause = function(){
-    self.audio.pause();
+    
+    if(self.audio.paused){
+      self.play();
+    } else {
+      self.audio.pause();
+      $('#favicon')[0].href = 'images/pause.png';
+    }
   }
 
   self.stop = function(){
-    self.audio.pause();
+    self.pause();
     self.audio.currentTime = 0;
   }
+  
   self.next = function(){
     playlist.next();
     self.audio.src = playlist.getCurrentFile().src;
@@ -112,7 +120,7 @@ var controls = (function (){
         }).                
         map(file_to_hash)
     );
-   // el.value = '';
+    el.value = '';
   }
 
   self.removeFiles = function(){
