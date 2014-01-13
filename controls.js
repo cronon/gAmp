@@ -37,39 +37,38 @@ var controls = (function (){
     self.pause();
     self.audio.currentTime = 0;
   }
-  
+
   self.next = function(){
     playlist.next();
-    self.audio.src = playlist.getCurrentFile().src;
+    self.audio.src = playlist.getCurrentSong().src;
     self.play();
   }
 
   self.previous = function(){
     playlist.previous();
-    self.audio.src = playlist.getCurrentFile().src;
+    self.audio.src = playlist.getCurrentSong().src;
     self.play();
   }
 
-  var file_to_hash = function(file){
-    var result = {};
-    result['name'] = file.name;
-    result['src'] = window.URL.createObjectURL(file);
+  var Song = function(file){
+    this['name'] = file.name;
+    this['src'] = window.URL.createObjectURL(file);
     id3(file, function(err,tags){
-      result['tags']=tags;
+      this['tags']=tags;
     });
-    return result;
   }
 
   /**
    * Split array to arrays by given property.
    *
+   * @param {Array} Array to split.
    * @param {Function} cb Function returns property.
-   * @returns {Array} Array of arrays.
+   * @returns {Array} Array of arrays. cb(item) returns the same value for each item from nested array.
    */
-  Array.prototype.splitByProperty = function(cb){
+  var splitByProperty = function(list,cb){
     var hash = {};
     var property;
-    this.forEach(function(item){
+    list.forEach(function(item){
       property = cb(item)
       hash[property]=hash[property] || [];
       hash[property].push(item);
@@ -98,15 +97,13 @@ var controls = (function (){
   }
 
   /**
-   * Add files to playlist
+   * Sort files within directories by name.
    *
-   * @param {object} el HTML input element
+   * @param {Array} Array of files.
+   * @return {Array} Array of files.
    */
-  self.addFiles = function(el){
-    window.URL = window.URL || window.webkitURL;
-    playlist.addFiles(
-        [].slice.call(el.files).
-        splitByProperty(function(file){
+  var sortInDirectories = function(files){
+    return splitByProperty(files,function(file){
           return file.webkitRelativePath.split('/').slice(0,-1).join('/'); //remove file name from the path
         }).
         map(function(directory){
@@ -114,20 +111,34 @@ var controls = (function (){
               return file1.name.localeCompare(file2.name);
           });
         }).
-        flatten().
+        flatten();
+  }
+
+  /**
+   * Add files to playlist
+   *
+   * @param {object} el HTML input element
+   */
+  self.addFiles = function(el){
+    window.URL = window.URL || window.webkitURL;
+    playlist.addSongs(
+        sortInDirectories(
+          [].slice.call(el.files)
+        ).        
         filter(function(file){
-          return file.type.split('/')[0] == 'audio';
+          return ['audio/mpeg','audio/wave','audio/ogg','audio/mp3'].indexOf(file.type)+1;
         }).                
-        map(file_to_hash)
+        map(function(f){return new Song(f)})
     );
     el.value = '';
   }
 
-  self.removeFiles = function(){
-    playlist.removeFiles($('#playlist > .ui-selected').
+  self.removeSongs = function(){
+    playlist.removeSongs($('#playlist > .ui-selected').
       toArray().
       map(function(div){
-      return $(div).index(); }));
+      return $(div).index(); })
+    );
   }
 
   /**

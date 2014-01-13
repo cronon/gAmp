@@ -5,26 +5,26 @@ var playlist = (function(){
   self.length = 0;
 
   /**
-   * @param {number} previous Id of previous song.
-   * @param {number} next Id of next song.
+   * @param {number} previous Index of previous song.
+   * @param {number} next Index of next song.
    */
   self.onSongChanged = function(previous, next){};
 
   /**
-   * @param {Array} files Array of files.
+   * @param {Array} songs Array of songs.
    */
-  self.onFilesAdded = function(files){};
+  self.onFilesAdded = function(songs){};
 
   /**
-   * @param {Array} ids Ids of removed songs.
+   * @param {Array} indexes of removed songs.
    */
-  self.onFilesRemoved = function(ids){};
+  self.onFilesRemoved = function(indexes){};
 
-  self.getCurrentFile = function(){
+  self.getCurrentSong = function(){
     return self[current];
   }
 
-  self.setCurrentFile = function(i){
+  self.setCurrent = function(i){
     var prev = current;
     current = i;
     self.onSongChanged(prev,current);
@@ -51,34 +51,34 @@ var playlist = (function(){
   }
 
   /**
-   * Add files to playlist.
+   * Add songs to playlist.
    *
-   * @param {array} files Array of files.
+   * @param {array} songs Array of songs.
    */
-  self.addFiles = function(files){
-    files.forEach(function(file){
-      [].push.call(self,file);
+  self.addSongs = function(songs){
+    songs.forEach(function(song){
+      [].push.call(self,song);
     });
     if(current === -1){
       current = 0;
     }
-    self.onFilesAdded(files);
+    self.onFilesAdded(songs);
   }
 
   var spaceship = function(a,b){ // a <=> b
     return a-b;
   }
   /**
-   * Remove files from playlist.
+   * Removes songs from playlist.
    *
-   * @param {array} ids Array of files' ids.
+   * @param {array} indexes Array of songs' indexes.
    */
-  self.removeFiles = function(ids){
-    ids.sort(spaceship).reverse().forEach(function(id){
-      (window.URL || window.webkitURL).revokeObjectURL(self[id].src);
-      [].splice.call(self,id,1);
+  self.removeSongs = function(indexes){
+    indexes.sort(spaceship).reverse().forEach(function(i){
+      (window.URL || window.webkitURL).revokeObjectURL(self[i].src);
+      [].splice.call(self,i,1);
     });
-    self.onFilesRemoved(ids);
+    self.onFilesRemoved(indexes);
   }
 
   self.replaceFile = function(was,become){
