@@ -15,6 +15,7 @@
     <script src="playlist.js" type="text/javascript" ></script>
     <script src="attachPlaylist.js" type="text/javascript" ></script>
     <script>
+      var title='***Welcome***\u2007'; //chrome removes usual whitespaces from the end of the title
       $(document).ready(function() {
         attachPlaylist(playlist);
         controls.setup($('#audio')[0]);
@@ -22,7 +23,17 @@
         controls.setPlaylist(playlist);
         playlist.addFiles(files);
         controls.audio.src = playlist.getCurrentFile().src;
-        controls.audio.volume=0.11; 
+        controls.audio.volume=0.11;
+
+        var shl = function(s){
+          return s.concat(s.slice(0,1)).slice(1);
+        }
+        setInterval(function(){
+            document.title = shl(shl(title));
+            title = shl(shl(title));
+            },
+            500
+        );
       });
     </script>
     <style type="text/css">
