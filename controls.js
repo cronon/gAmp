@@ -119,7 +119,7 @@ var controls = (function (){
     playlist.removeFiles($('#playlist > .ui-selected').
       toArray().
       map(function(div){
-      return $(div).index() }));
+      return $(div).index(); }));
   }
 
   /**

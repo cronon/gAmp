@@ -17,7 +17,7 @@
       $(document).ready(function() {
         attachPlaylist(playlist);
         controls.setup($('#audio')[0]);
-        var files = [{'src':'1.mp3'},{'src':'2.mp3'}];
+        var files = [{'src':'1.mp3','name':'qwe.ogg'},{'src':'2.mp3','name':'Burzum - Back to the shadows'}];
         controls.setPlaylist(playlist);
         playlist.addFiles(files);
         controls.audio.src = playlist.getCurrentFile().src;

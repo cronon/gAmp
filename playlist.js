@@ -56,26 +56,28 @@ var playlist = (function(){
    * @param {array} files Array of files.
    */
   self.addFiles = function(files){
-    var i=0;
-    for(i=0;i<files.length;i++){
-      self[self.length + i] = files[i];
-      //files[i]['id'] = self.length + i;
-    }
-    self.length += files.length;
+    files.forEach(function(file){
+      [].push.call(self,file);
+    });
     if(current === -1){
       current = 0;
     }
     self.onFilesAdded(files);
   }
 
+  var spaceship = function(a,b){ // a <=> b
+    return a-b;
+  }
   /**
    * Remove files from playlist.
    *
    * @param {array} ids Array of files' ids.
    */
   self.removeFiles = function(ids){
-    ids.forEach(function(id){
-      [].splice.call(self,id,1)
+    ids.sort(spaceship).reverse().forEach(function(id){
+      console.log(id);
+      console.log([].splice.call(self,id,1)[0].name);
+      console.log(self);
     });
     // [].forEach.call(self, function(file,index){
     //   file.id = index;
