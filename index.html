@@ -53,12 +53,13 @@
       </div>
 
       <div class='menu'>
-        <button onclick="controls.addFiles($('#filesInput')[0])"><label>Add files</label></button>
+        <button onclick="controls.addFiles($('#filesInput')[0])">Add files</button>
         <input id='filesInput' style="display:none" type="file" multiple accept="audio/mp3,audio/ogg,audio/wave"/>      
-        <button onclick="controls.addFiles($('#directoryInput')[0])"><label>Add dir</label></button>
+        <button onclick="controls.addFiles($('#directoryInput')[0])">Add dir</button>
         <input id='directoryInput' style="display:none" type="file" multiple webkitdirectory accept="audio/mp3,audio/ogg,audio/wave"/> 
-        <a href='#'>Add playlist</a>
-        <button onclick="controls.removeSongs()"><label>Remove selected</label></button>
+        <button onclick="controls.addPlaylist($('#playlistInput')[0])">Add playlist</button>
+        <input id='playlistInput' style="display:none" type="file" accept="audio/x-mpegurl,audio/x-scpls"/>
+        <button onclick="controls.removeSongs()">Remove selected</button>
       </div>
     </div>
     <div id="playlist_wrapper">

@@ -53,9 +53,6 @@ var controls = (function (){
   var Song = function(file){
     this['name'] = file.name;
     this['src'] = window.URL.createObjectURL(file);
-    id3(file, function(err,tags){
-      this['tags']=tags;
-    });
   }
 
   /**
@@ -81,8 +78,8 @@ var controls = (function (){
    */
   var sortByPath = function(files){
     return files.sort(function(file1,file2){
-        return (file1.webkitRelativePath||file1.mozFullPath).
-          localeCompare((file2.webkitRelativePath||file2.mozFullPath));
+        return (file1.webkitRelativePath||file1.mozFullPath||file1.name).
+          localeCompare((file2.webkitRelativePath||file2.mozFullPath||file2.name));
     });
   }
 
@@ -102,9 +99,50 @@ var controls = (function (){
         filter(function(file){
           return ['audio/mpeg','audio/wave','audio/ogg','audio/mp3'].indexOf(file.type)+1;
         }).                
-        map(function(f){return new Song(f)})
+        map(function(f){
+          var s = new Song(f)
+          id3(f, function(err,tags){
+            s['tags']=tags;
+          });
+          return s;
+        })
     );
     el.value = '';}
+  }
+
+  /**
+   * Add playlist from file
+   *
+   * @params {File} file File object.
+   */
+  self.addPlaylist = function(el){
+    el.click();
+    el.onchange = function(){//architecture failure. Am i need controls.add* functions? Or just set of callbacks on view event
+      var file = el.files[0];
+      if(!file.type in ['audio/x-mpegurl','audio/x-scpls']){return;}
+      fr = new FileReader();
+      var entries;
+      fr.onloadend =function(){
+        if(file.type == 'audio/x-mpegurl'){
+          entries = M3U.parse(this.result);
+        }else{
+          entries = PLS.parse(this.result);
+        }
+        playlist.addSongs(
+          entries.map(function(e){
+            if(e){
+              var s = {};
+              s.src = e.file;
+              s.name = e.file.split('/').splice(-1)[0];
+              s.tags = e;
+              return s;
+            }
+          })
+        );
+      }
+      fr.readAsText(file);
+      el.value ='';
+    }
   }
 
   self.removeSongs = function(){
