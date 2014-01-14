@@ -153,6 +153,14 @@ var controls = (function (){
   }
 
   /**
+   * Define actions when checkbox toggle.
+   */
+  self.checkToggle = function(el){
+    var toggle = el.id;
+    playlist[toggle] = el.checked;
+  }
+
+  /**
    * Run when document loaded.
    *
    * @param {object} audio HTML5 <audio> element.

@@ -3,6 +3,8 @@ var playlist = (function(){
   var current = -1;
 
   self.length = 0;
+  self.shuffle = false;
+  self.repeat = false;
 
   /**
    * @param {number} previous Index of previous song.
@@ -32,7 +34,8 @@ var playlist = (function(){
 
   self.next = function(){
     var prev = current;
-    current+=1;
+    if(!self.repeat){current+=1};
+    if(self.shuffle){current = Math.floor(Math.random()*self.length % self.length);}
     if(current>=self.length){
       current -=self.length;
     }

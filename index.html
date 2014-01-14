@@ -50,6 +50,10 @@
         <img src="images/stop.png" onclick="controls.stop()" class="controls_img" />
         <img src="images/previous.png" onclick="controls.previous()" class="controls_img" />
         <img src="images/next.png" onclick="controls.next()" class="controls_img" />
+        <div style="float:right">
+          <input type="checkbox" id="shuffle" onchange="controls.checkToggle(this)" /><label for="shuffle">Shuffle</label>
+          <input type="checkbox" id="repeat" onchange="controls.checkToggle(this)" /><label for="repeat">Repeat</label>
+        </div>
       </div>
 
       <div class='menu'>
