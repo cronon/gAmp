@@ -59,29 +59,6 @@ var controls = (function (){
   }
 
   /**
-   * Split array to arrays by given property.
-   *
-   * @param {Array} Array to split.
-   * @param {Function} cb Function returns property.
-   * @returns {Array} Array of arrays. cb(item) returns the same value for each item from nested array.
-   */
-  var splitByProperty = function(list,cb){
-    var hash = {};
-    var property;
-    list.forEach(function(item){
-      property = cb(item)
-      hash[property]=hash[property] || [];
-      hash[property].push(item);
-    });
-    var key;
-    var result = [];
-    for(key in hash){
-      result.push(hash[key]);
-    }
-    return result;
-  }
-
-  /**
    * Flattens a nested array.
    *
    * @returns {Array} Array flattened a single level
@@ -97,22 +74,16 @@ var controls = (function (){
   }
 
   /**
-   * Sort files within directories by name.
+   * Sort files by path
    *
    * @param {Array} Array of files.
    * @return {Array} Array of files.
    */
-  var sortInDirectories = function(files){
-    return splitByProperty(files,function(file){
-          return (file.webkitRelativePath||file.mozFullPath).
-                  split('/').slice(0,-1).join('/'); //remove file name from the path
-        }).
-        map(function(directory){
-          return directory.sort(function(file1,file2){
-              return file1.name.localeCompare(file2.name);
-          });
-        }).
-        flatten();
+  var sortByPath = function(files){
+    return files.sort(function(file1,file2){
+        return (file1.webkitRelativePath||file1.mozFullPath).
+          localeCompare((file2.webkitRelativePath||file2.mozFullPath));
+    });
   }
 
   /**
@@ -125,7 +96,7 @@ var controls = (function (){
     el.onchange = function(){
     window.URL = window.URL || window.webkitURL;
     playlist.addSongs(
-        sortInDirectories(
+        sortByPath(
           [].slice.call(el.files)
         ).        
         filter(function(file){

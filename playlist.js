@@ -13,12 +13,12 @@ var playlist = (function(){
   /**
    * @param {Array} songs Array of songs.
    */
-  self.onFilesAdded = function(songs){};
+  self.onSongsAdded = function(songs){};
 
   /**
    * @param {Array} indexes of removed songs.
    */
-  self.onFilesRemoved = function(indexes){};
+  self.onSongsRemoved = function(indexes){};
 
   self.getCurrentSong = function(){
     return self[current];
@@ -62,7 +62,7 @@ var playlist = (function(){
     if(current === -1){
       current = 0;
     }
-    self.onFilesAdded(songs);
+    self.onSongsAdded(songs);
   }
 
   var spaceship = function(a,b){ // a <=> b
@@ -78,10 +78,10 @@ var playlist = (function(){
       (window.URL || window.webkitURL).revokeObjectURL(self[i].src);
       [].splice.call(self,i,1);
     });
-    self.onFilesRemoved(indexes);
+    self.onSongsRemoved(indexes);
   }
 
-  self.replaceFile = function(was,become){
+  self.replaceSong = function(was,become){
     var file = [].splice.call(self,was,1)[0];
     [].splice.call(self,become,0,file);
     if(current == was){

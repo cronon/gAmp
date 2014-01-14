@@ -11,7 +11,7 @@ var attachPlaylist = function(playlist) {
           was = ui.item.index(); 
       },
       update: function(e,ui){
-          playlist.replaceFile(was,ui.item.index());
+          playlist.replaceSong(was,ui.item.index());
       }
     }).
     selectable({ 
@@ -32,10 +32,10 @@ var attachPlaylist = function(playlist) {
     $(this).addClass('ui-selected');
   }
 
-  playlist.onFilesAdded = function(files){
+  playlist.onSongsAdded = function(songs){
     var s = '';
-    files.forEach(function(file){
-      s = file.name;
+    songs.forEach(function(song){
+      s = song.name;
       $('#playlist').append("<li>" + s + "</li>");
       $('li').last().addClass('not-highlited').
                     dblclick(onSongDblClick).
@@ -68,9 +68,9 @@ var attachPlaylist = function(playlist) {
     scrollToSong(next);
   }
 
-  playlist.onFilesRemoved = function(ids){
-    ids.forEach(function(id){
-      $('li:eq('+id+')').remove();
+  playlist.onSongsRemoved = function(indexes){
+    indexes.forEach(function(i){
+      $('li:eq('+i+')').remove();
     });
   }
 };

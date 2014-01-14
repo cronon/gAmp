@@ -3,7 +3,6 @@
   <head>
     <link id="favicon" rel="icon" type="image/png" href="images/pause.png" />
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-
     <!-- Original jquery ui selectable dont respect clicks
          http://forum.jquery.com/topic/solution-for-selectable-vs-dblclick --> 
     <script src="jquery-ui.js" type="text/javascript"></script>
@@ -11,6 +10,9 @@
 
     <!-- https://npmjs.org/package/id3js -->
     <script src="id3.min.js" type="text/javascript"></script>
+
+    <!--https://github.com/nickdesaulniers/javascript-playlist-parser -->
+    <script type="text/javascript" src="https://rawgithub.com/nickdesaulniers/javascript-playlist-parser/master/lib/parser.min.js"></script>
     <script src="controls.js" type="text/javascript" ></script>
     <script src="playlist.js" type="text/javascript" ></script>
     <script src="attachPlaylist.js" type="text/javascript" ></script>
@@ -36,48 +38,7 @@
         );
       });
     </script>
-    <style type="text/css">
-      #current_song{
-        text-align: center;
-        font-weight: bold;
-        font-size:22px;
-      }
-      .controls_img{
-        width:100px;
-      }
-      
-      #playlist_wrapper{
-        position:fixed; 
-        overflow-y:auto; 
-        margin-top:200px; 
-        height:55vh; 
-        width:80%;
-      }
-
-      #playlist{
-        counter-reset: song;
-      }
-      #playlist > li:before { 
-        content: counter(song) ". "; 
-        counter-increment: song;
-      }
-      #playlist > li{
-        display:block;
-      }
-      .highlited{
-        background:#b0c4de;
-      }
-
-      .ui-selected{
-        background:#face8d;
-      }
-      .ui-selecting{
-        background:#fbdf9e;
-      }
-      .handle{
-        float: right;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <div style="position:fixed; background-color:#ffffff; width:600px;">

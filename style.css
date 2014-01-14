@@ -1,0 +1,40 @@
+#current_song{
+  text-align: center;
+  font-weight: bold;
+  font-size:22px;
+}
+.controls_img{
+  width:100px;
+}
+
+#playlist_wrapper{
+  position:fixed; 
+  overflow-y:auto; 
+  margin-top:200px; 
+  height:55vh; 
+  width:80%;
+}
+
+#playlist{
+  counter-reset: song;
+}
+#playlist > li:before { 
+  content: counter(song) ". "; 
+  counter-increment: song;
+}
+#playlist > li{
+  display:block;
+}
+.highlited{
+  background:#b0c4de;
+}
+
+.ui-selected{
+  background:#face8d;
+}
+.ui-selecting{
+  background:#fbdf9e;
+}
+.handle{
+  float: right;
+}
