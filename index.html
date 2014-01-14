@@ -7,6 +7,7 @@
          http://forum.jquery.com/topic/solution-for-selectable-vs-dblclick --> 
     <script src="jquery-ui.js" type="text/javascript"></script>
     <link type="text/css" href="http://code.jquery.com/ui/jquery-ui-git.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css">
 
     <!-- https://npmjs.org/package/id3js -->
     <script src="id3.min.js" type="text/javascript"></script>
@@ -36,39 +37,43 @@
             },
             500
         );
+        $('.controls').buttonset();
+        $('.menu').buttonset();
       });
     </script>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <div id="controls_wrapper">
-      <div id="current_song">Welcome to gAmp</div>
-      <audio id="audio" src="" style="width:100%" controls>Your browser does not support the audio tag.</audio>
-      <div class="controls">
-        <img src="images/play.png" onclick="controls.play()" class="controls_img" />
-        <img src="images/pause.png" onclick="controls.pause()" class="controls_img" />
-        <img src="images/stop.png" onclick="controls.stop()" class="controls_img" />
-        <img src="images/previous.png" onclick="controls.previous()" class="controls_img" />
-        <img src="images/next.png" onclick="controls.next()" class="controls_img" />
-        <div style="float:right">
-          <input type="checkbox" id="shuffle" onchange="controls.checkToggle(this)" /><label for="shuffle">Shuffle</label>
-          <input type="checkbox" id="repeat" onchange="controls.checkToggle(this)" /><label for="repeat">Repeat</label>
+    <div id="column">
+      <div id="controls_wrapper">
+        <div id="current_song">Welcome to gAmp</div>
+        <audio id="audio" src="" style="width:100%" controls>Your browser does not support the audio tag.</audio>
+        <div class="controls">
+          <button><label><img src="images/play.png" onclick="controls.play()" class="controls_img" /></label></button>
+          <button><label><img src="images/pause.png" onclick="controls.pause()" class="controls_img" /></label></button>
+          <button><label><img src="images/stop.png" onclick="controls.stop()" class="controls_img" /></label></button>
+          <button><label><img src="images/previous.png" onclick="controls.previous()" class="controls_img" /></label></button>
+          <button><label><img src="images/next.png" onclick="controls.next()" class="controls_img" /></label></button>
+          <span class="checkboxes">
+            <input type="checkbox" id="shuffle" onchange="controls.checkToggle(this)" /><label for="shuffle">Shuffle</label>
+            <br>
+            <input type="checkbox" id="repeat" onchange="controls.checkToggle(this)" /><label for="repeat">Repeat</label>
+          </span>
+        </div>
+        <div class='menu'>
+          <button onclick="controls.addFiles($('#filesInput')[0])">Add files</button>
+          <input id='filesInput' style="display:none" type="file" multiple accept="audio/mp3,audio/ogg,audio/wave"/>     
+          <button onclick="controls.addFiles($('#directoryInput')[0])">Add dir</button>
+          <input id='directoryInput' style="display:none" type="file" multiple webkitdirectory accept="audio/mp3,audio/ogg,audio/wave"/> 
+          <button onclick="controls.addPlaylist($('#playlistInput')[0])">Add playlist</button>
+          <input id='playlistInput' style="display:none" type="file" accept="audio/x-mpegurl,audio/x-scpls"/>
+          <button onclick="controls.removeSongs()">Remove selected</button>
         </div>
       </div>
-
-      <div class='menu'>
-        <button onclick="controls.addFiles($('#filesInput')[0])">Add files</button>
-        <input id='filesInput' style="display:none" type="file" multiple accept="audio/mp3,audio/ogg,audio/wave"/>      
-        <button onclick="controls.addFiles($('#directoryInput')[0])">Add dir</button>
-        <input id='directoryInput' style="display:none" type="file" multiple webkitdirectory accept="audio/mp3,audio/ogg,audio/wave"/> 
-        <button onclick="controls.addPlaylist($('#playlistInput')[0])">Add playlist</button>
-        <input id='playlistInput' style="display:none" type="file" accept="audio/x-mpegurl,audio/x-scpls"/>
-        <button onclick="controls.removeSongs()">Remove selected</button>
+      <div id="playlist_wrapper">
+        <ol id="playlist">
+        </ol>
       </div>
-    </div>
-    <div id="playlist_wrapper">
-      <ol id="playlist">
-      </ol>
     </div>
   </body>
 </html>

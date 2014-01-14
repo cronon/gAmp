@@ -1,23 +1,34 @@
+#column{
+  width:600px;
+}
 #controls_wrapper{
   position:fixed;
-  background-color:#ffffff; 
-  width:600px;
+  background-color:#ffffff;
+  width:inherit;
 }
 #current_song{
   text-align: center;
   font-weight: bold;
   font-size:22px;
 }
-.controls_img{
-  width:100px;
+.controls > .ui-button{
+  width: 101px;
 }
-
+.controls_img{
+  width:50px;
+}
+.checkboxes{
+  float: right;
+}
+.checkboxes > .ui-button{
+  height: 33px;
+}
 #playlist_wrapper{
   position:fixed; 
   overflow-y:auto; 
   margin-top:200px; 
-  height:55vh; 
-  width:80%;
+  height:55vh;
+  width:inherit;
 }
 
 #playlist{
