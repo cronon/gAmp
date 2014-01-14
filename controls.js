@@ -51,10 +51,10 @@ var controls = (function (){
   }
 
   var fileToSong = function(file){
-    var song;
+    var song={};
     song['name'] = file.name;
     song['src'] = window.URL.createObjectURL(file);
-    id3(f, function(err,tags){
+    id3(file, function(err,tags){
         song['tags']=tags;
     });
     return song;
