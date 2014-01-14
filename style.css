@@ -1,3 +1,8 @@
+#controls_wrapper{
+  position:fixed;
+  background-color:#ffffff; 
+  width:600px;
+}
 #current_song{
   text-align: center;
   font-weight: bold;
@@ -27,6 +32,10 @@
 }
 .highlited{
   background:#b0c4de;
+}
+
+li > .duration{
+  float:right;
 }
 
 .ui-selected{

@@ -50,9 +50,14 @@ var controls = (function (){
     self.play();
   }
 
-  var Song = function(file){
-    this['name'] = file.name;
-    this['src'] = window.URL.createObjectURL(file);
+  var fileToSong = function(file){
+    var song;
+    song['name'] = file.name;
+    song['src'] = window.URL.createObjectURL(file);
+    id3(f, function(err,tags){
+        song['tags']=tags;
+    });
+    return song;
   }
 
   /**
@@ -99,13 +104,7 @@ var controls = (function (){
         filter(function(file){
           return ['audio/mpeg','audio/wave','audio/ogg','audio/mp3'].indexOf(file.type)+1;
         }).                
-        map(function(f){
-          var s = new Song(f)
-          id3(f, function(err,tags){
-            s['tags']=tags;
-          });
-          return s;
-        })
+        map(fileToSong)
     );
     el.value = '';}
   }
@@ -113,7 +112,7 @@ var controls = (function (){
   /**
    * Add playlist from file
    *
-   * @params {File} file File object.
+   * @param {object} el HTML input element.
    */
   self.addPlaylist = function(el){
     el.click();
@@ -159,11 +158,9 @@ var controls = (function (){
    * @param {object} audio HTML5 <audio> element.
    */
   self.setup = function(audio){
-    self.audio = audio;
-    self.audio.addEventListener('ended',function(){controls.next()}, false);
+    self.setAudio(audio);
 
     $(document).keyup(function(e){
-      console.log(e.keyCode)
       if(e.keyCode==32||e.keyCode==19){
         if(self.audio.paused){
           self.play();

@@ -32,6 +32,20 @@ var attachPlaylist = function(playlist) {
     $(this).addClass('ui-selected');
   }
 
+  var onSongContext = function(e){
+    var s = '';
+    e.preventDefault();
+    var song = playlist[$(e.target).index()];
+    s+=song.name + '\n';
+    if (song.tags){
+      s+=song.tags.artist+' - '+song.tags.title+'\n';
+      s+=(song.tags.album || '')+'\n';
+      s+=(song.tags.year || '')+'\n';      
+    }
+    s+=(song.duration || '');
+    alert(s);
+  }
+
   playlist.onSongsAdded = function(songs){
     var s = '';
     songs.forEach(function(song){
@@ -39,7 +53,9 @@ var attachPlaylist = function(playlist) {
       $('#playlist').append("<li>" + s + "</li>");
       $('li').last().addClass('not-highlited').
                     dblclick(onSongDblClick).
-                    append("<span class='handle ui-icon ui-icon-carat-2-n-s'></span>");
+                    bind('contextmenu',onSongContext).
+                    append("<span class='handle ui-icon ui-icon-carat-2-n-s'></span>").
+                    append("<span class='duration'></span>");
     });
   }
 
@@ -51,6 +67,22 @@ var attachPlaylist = function(playlist) {
     }
   }
 
+  /**
+   * Convert seconds to hh:mm:ss or mm:ss if hh=='00'
+   *
+   * @param {Number} seconds
+   * @return {String} String in hh:mm:ss or mm:ss format.
+   */
+  var secondsToTime = function(seconds){
+    var prependZero = function(x){
+      return String(x).length == 1 ? '0'+x : x
+    }
+    var h = Math.floor(seconds/3600);
+    var m = Math.floor(seconds/60) - h*60;
+    var s = Math.floor(seconds % 60);
+    return result = (h==0 ? '' : prependZero(h)+':') + prependZero(m) + ':' + prependZero(s);
+  }
+
   playlist.onSongChanged = function(prev,next){
     song = playlist[next];
 
@@ -60,6 +92,15 @@ var attachPlaylist = function(playlist) {
     } else {
         s += song.name;
     }
+
+    if(!song.duration){
+      $(controls.audio).bind('canplay',function(e){
+        song.duration = secondsToTime(controls.audio.duration);
+        $('li:eq('+next+') > .duration').text(song.duration);
+        $(controls.audio).unbind('canplay');
+      });
+    }
+    
     $('li:eq('+prev+')').addClass('not-highlited').removeClass('highlited');
     $('li:eq('+next+')').addClass('highlited').removeClass('not-highlited').
         contents().first()[0].textContent=s;
