@@ -36,14 +36,14 @@ var attachPlaylist = function(playlist) {
     var s = '';
     e.preventDefault();
     var song = playlist[$(e.target).index()];
-    s+=song.name + '\n';
     if (song.tags){
-      s+=song.tags.artist+' - '+song.tags.title+'\n';
-      s+=(song.tags.album || '')+'\n';
-      s+=(song.tags.year || '')+'\n';      
+      s+='Title: '+(song.tags.title||'')+'<br>';
+      s+='Artist: '+(song.tags.artist||'')+'<br>';
+      s+='Album: '+(song.tags.album || '')+'<br>';
+      s+='Year: '+(song.tags.year || '')+'<br>';      
     }
-    s+=(song.duration || '');
-    alert(s);
+    s+='Duration: '+(song.duration || '');
+    $('#dialog').html(s).dialog({title:song.name}).dialog('open');
   }
 
   playlist.onSongsAdded = function(songs){

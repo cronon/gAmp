@@ -39,6 +39,7 @@
         );
         $('.controls').buttonset();
         $('.menu').buttonset();
+        $('#dialog').dialog({autoOpen:false,modal:true});
       });
     </script>
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -49,11 +50,11 @@
         <div id="current_song">Welcome to gAmp</div>
         <audio id="audio" src="" style="width:100%" controls>Your browser does not support the audio tag.</audio>
         <div class="controls">
-          <button><label><img src="images/play.png" onclick="controls.play()" class="controls_img" /></label></button>
-          <button><label><img src="images/pause.png" onclick="controls.pause()" class="controls_img" /></label></button>
-          <button><label><img src="images/stop.png" onclick="controls.stop()" class="controls_img" /></label></button>
-          <button><label><img src="images/previous.png" onclick="controls.previous()" class="controls_img" /></label></button>
-          <button><label><img src="images/next.png" onclick="controls.next()" class="controls_img" /></label></button>
+          <button onclick="controls.play()" ><label><img src="images/play.png" class="controls_img" /></label></button>
+          <button onclick="controls.pause()" ><label><img src="images/pause.png" class="controls_img" /></label></button>
+          <button onclick="controls.stop()" ><label><img src="images/stop.png" class="controls_img" /></label></button>
+          <button onclick="controls.previous()" ><label><img src="images/previous.png" class="controls_img" /></label></button>
+          <button onclick="controls.next()" ><label><img src="images/next.png" class="controls_img" /></label></button>
           <span class="checkboxes">
             <input type="checkbox" id="shuffle" onchange="controls.checkToggle(this)" /><label for="shuffle">Shuffle</label>
             <br>
@@ -75,5 +76,6 @@
         </ol>
       </div>
     </div>
+    <div id="dialog"></div>
   </body>
 </html>
