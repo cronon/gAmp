@@ -116,13 +116,13 @@ var controls = (function (){
    */
   self.addPlaylist = function(el){
     el.click();
-    el.onchange = function(){//architecture failure. Am i need controls.add* functions? Or just set of callbacks on view event
+    el.onchange = function(){
       var file = el.files[0];
       if(!file.type in ['audio/x-mpegurl','audio/x-scpls']){return;}
       fr = new FileReader();
       var entries;
       fr.onloadend =function(){
-        if(file.type == 'audio/x-mpegurl'){
+        if(['audio/x-mpegurl','audio/mpegurl'].indexOf(file.type)+1){
           entries = M3U.parse(this.result);
         }else{
           entries = PLS.parse(this.result);
@@ -132,7 +132,7 @@ var controls = (function (){
             if(e){
               var s = {};
               s.src = e.file;
-              s.name = e.file.split('/').splice(-1)[0];
+              s.name = e.file.replace(/^.*(\\|\/|\:)/, '');;
               s.tags = e;
               return s;
             }

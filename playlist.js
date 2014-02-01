@@ -1,8 +1,7 @@
 var playlist = (function(){
-  var self = {};
+  var self = [];
   var current = -1;
 
-  self.length = 0;
   self.shuffle = false;
   self.repeat = false;
 
@@ -60,7 +59,7 @@ var playlist = (function(){
    */
   self.addSongs = function(songs){
     songs.forEach(function(song){
-      [].push.call(self,song);
+      self.push(song);
     });
     if(current === -1){
       current = 0;
@@ -79,17 +78,16 @@ var playlist = (function(){
   self.removeSongs = function(indexes){
     indexes.sort(spaceship).reverse().forEach(function(i){
       (window.URL || window.webkitURL).revokeObjectURL(self[i].src);
-      [].splice.call(self,i,1);
+      self.splice(i,1);
     });
     self.onSongsRemoved(indexes);
   }
 
   self.replaceSong = function(was,become){
-    var file = [].splice.call(self,was,1)[0];
-    [].splice.call(self,become,0,file);
-    if(current == was){
-      current = become;
-    }
+    var current_song = self.getCurrentSong();
+    var song = self.splice(was,1)[0];
+    self.splice(become,0,song);    
+    current = self.indexOf(current_song);
   }
   return self;
 }());
