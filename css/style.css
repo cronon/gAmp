@@ -1,0 +1,63 @@
+#column{
+  width:605px;
+}
+#controls_wrapper{
+  position:fixed;
+  background-color:#ffffff;
+  width:inherit;
+}
+#current_song{
+  text-align: center;
+  font-weight: bold;
+  font-size:22px;
+}
+.menu > .ui-button{
+  width: 90px;
+}
+.controls_img{
+  width:68px;
+}
+.checkboxes{
+  float: right;
+}
+.ui-button{
+  font-size:12pt;
+}
+#playlist_wrapper{
+  position:fixed; 
+  overflow-y:auto; 
+  margin-top:200px; 
+  height:55vh;
+  width:inherit;
+  padding-top:0px;
+}
+
+#playlist{
+  counter-reset: song;
+  padding-left:10px;
+}
+#playlist > li:before { 
+  content: counter(song) ". "; 
+  counter-increment: song;
+}
+#playlist > li{
+  display:block;
+}
+.highlited{
+  background:#b0c4de;
+}
+
+li > .duration{
+  float:right;
+}
+
+.ui-selected{
+  background:#face8d;
+}
+.ui-selecting{
+  background:#fbdf9e;
+}
+.handle{
+  font-size:10pt;
+  float: right;
+}
